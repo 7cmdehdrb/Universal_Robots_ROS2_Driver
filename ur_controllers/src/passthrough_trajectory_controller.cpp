@@ -607,7 +607,7 @@ bool PassthroughTrajectoryController::check_goal_tolerance()
         return false;
       }
     }
-    if (!active_joint_traj_.points.back().accelerations.empty()) {
+    if (!active_joint_traj_.points.back().accelerations.empty() && !joint_acceleration_state_interface_.empty()) {
       const auto joint_acc = joint_acceleration_state_interface_[i].get().get_optional();
       if (!joint_acc.has_value()) {
         return false;

@@ -87,13 +87,27 @@ def launch_setup(context, *args, **kwargs):
         [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
     )
     physical_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "physical_parameters.yaml"]
+        [
+            FindPackageShare(description_package),
+            "config",
+            ur_type,
+            "physical_parameters.yaml",
+        ]
     )
     visual_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "visual_parameters.yaml"]
+        [
+            FindPackageShare(description_package),
+            "config",
+            ur_type,
+            "visual_parameters.yaml",
+        ]
     )
     script_filename = PathJoinSubstitution(
-        [FindPackageShare("ur_client_library"), "resources", "external_control.urscript"]
+        [
+            FindPackageShare("ur_client_library"),
+            "resources",
+            "external_control.urscript",
+        ]
     )
     input_recipe_filename = PathJoinSubstitution(
         [FindPackageShare("ur_robot_driver"), "resources", "rtde_input_recipe.txt"]
@@ -106,7 +120,9 @@ def launch_setup(context, *args, **kwargs):
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([FindPackageShare(description_package), "urdf", description_file]),
+            PathJoinSubstitution(
+                [FindPackageShare(description_package), "urdf", description_file]
+            ),
             " ",
             "robot_ip:=",
             robot_ip,
@@ -201,7 +217,9 @@ def launch_setup(context, *args, **kwargs):
         ]
     )
     robot_description = {
-        "robot_description": ParameterValue(value=robot_description_content, value_type=str)
+        "robot_description": ParameterValue(
+            value=robot_description_content, value_type=str
+        )
     }
 
     initial_joint_controllers = PathJoinSubstitution(
@@ -395,7 +413,17 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "ur_type",
             description="Type/series of used UR robot.",
-            choices=["ur3", "ur3e", "ur5", "ur5e", "ur10", "ur10e", "ur16e", "ur20", "ur30"],
+            choices=[
+                "ur3",
+                "ur3e",
+                "ur5",
+                "ur5e",
+                "ur10",
+                "ur10e",
+                "ur16e",
+                "ur20",
+                "ur30",
+            ],
         )
     )
     declared_arguments.append(
@@ -530,17 +558,21 @@ def generate_launch_description():
         )
     )
     declared_arguments.append(
-        DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
+        DeclareLaunchArgument(
+            "launch_rviz", default_value="true", description="Launch RViz?"
+        )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "launch_dashboard_client", default_value="true", description="Launch Dashboard Client?"
+            "launch_dashboard_client",
+            default_value="true",
+            description="Launch Dashboard Client?",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
             "use_tool_communication",
-            default_value="false",
+            default_value="true",
             description="Only available for e series!",
         )
     )
@@ -604,7 +636,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "tool_voltage",
-            default_value="0",  # 0 being a conservative value that won't destroy anything
+            default_value="24",  # 0 being a conservative value that won't destroy anything
             description="Tool voltage that will be setup.",
         )
     )
@@ -643,4 +675,6 @@ def generate_launch_description():
             description="Port that will be opened for trajectory control.",
         )
     )
-    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
+    return LaunchDescription(
+        declared_arguments + [OpaqueFunction(function=launch_setup)]
+    )
